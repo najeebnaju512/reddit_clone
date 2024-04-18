@@ -29,7 +29,7 @@ class BottomNavScreen extends StatelessWidget {
                 CommunityScreen(),
                 CreateScreen(),
                 ExploreScreen(),
-                InboxScreen(),
+                // InboxScreen(),
                 ProfileScreen()
               ],
             );
@@ -71,10 +71,10 @@ class BottomNavScreen extends StatelessWidget {
                       icon: Icon(Icons.travel_explore_sharp),
                       label: 'Explore',
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.notifications),
-                      label: 'Inbox',
-                    ),
+                    // BottomNavigationBarItem(
+                    //   icon: Icon(Icons.notifications),
+                    //   label: 'Inbox',
+                    // ),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.person), label: 'Profile')
                   ],
