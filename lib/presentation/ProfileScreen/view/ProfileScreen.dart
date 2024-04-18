@@ -142,6 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisSpacing: 10),
                         itemBuilder: (context, index) => Container(
                           decoration: BoxDecoration(
+                            image: DecorationImage(image: NetworkImage("")),
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.amber,
                           ),
