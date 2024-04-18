@@ -13,9 +13,11 @@ import '../../../app_config/app_config.dart';
 
 class ProfileController extends ChangeNotifier {
   UserProfileModel userProfileModel = UserProfileModel();
-  FollowingModel followingModel =FollowingModel();
+  FollowingModel followingModel = FollowingModel();
+  FollowingModel followersModel =FollowingModel();
   bool isLoadingProfile = false;
-  bool isLoadingFollowing=false;
+  bool isLoadingFollowing = false;
+  bool isLoadingFollowers = false;
   late SharedPreferences sharedPreferences;
   var data;
 
@@ -36,18 +38,37 @@ class ProfileController extends ChangeNotifier {
       });
     });
   }
-  fetchFollowing(context){
-    isLoadingFollowing=true;
+
+  fetchFollowing(context) {
+    isLoadingFollowing = true;
     notifyListeners();
     getUSerData().then((data) {
-      log("Profilecontroller -> fetchFollowing");
+      log("profileController -> fetchFollowing");
       ProfileService.fetchFollowing(data).then((value) {
+        if (value["status"] == 1) {
+          followingModel = FollowingModel.fromJson(value);
+          isLoadingFollowing = false;
+        } else {
+          AppUtils.oneTimeSnackBar("error", context: context);
+        }
+        notifyListeners();
+      });
+    });
+  }
+
+  fetchFollowers(context) {
+    isLoadingFollowers = true;
+    notifyListeners();
+    getUSerData().then((data) {
+      log("profileController -> fetchFollowing");
+      ProfileService.fetchFollowers(data).then((value) {
         if(value["status"]==1){
-          followingModel=FollowingModel.fromJson(value);
-          isLoadingFollowing=false;
+          followersModel=FollowingModel.fromJson(value);
+          isLoadingFollowers=false;
         }else{
           AppUtils.oneTimeSnackBar("error", context: context);
         }
+        notifyListeners();
       });
     });
   }
@@ -62,19 +83,19 @@ class ProfileController extends ChangeNotifier {
     return data["username"];
   }
 
-  void logOutFunction(BuildContext context) async{
+  void logOutFunction(BuildContext context) async {
     deleteUserData().then((value) {
       Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const FirstScreen()),
-              (route) => false);
+          context, MaterialPageRoute(builder: (context) => const FirstScreen()), (route) => false);
       setStatus();
     });
   }
+
   deleteUserData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.remove(AppConfig.loginData);
   }
+
   void setStatus() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setBool(AppConfig.status, false);
