@@ -13,7 +13,6 @@ class _CommunityScreenWidgetState extends State<CommunityScreenWidget> {
     return SingleChildScrollView(
       child: Container(
         width: double.infinity,
-        height: 125,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(width: 1),
@@ -53,19 +52,9 @@ class _CommunityScreenWidgetState extends State<CommunityScreenWidget> {
                             102), // Change the background color here
                       ),
                       child: Text(
-                        "Join",
+                        "Follow",
                         style: TextStyle(color: Colors.white),
                       )),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      "Discuss the fashion and stylistic choices of Bollywood stars and other Indian celebrities.")
                 ],
               ),
             ),
