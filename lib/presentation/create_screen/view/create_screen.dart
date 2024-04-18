@@ -1,14 +1,43 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class CreateScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../global_widgets/image_icon.dart';
+import '../../bottom_navigation_screen/controller/bottom_nav_con';
+
+class CreateScreen extends StatefulWidget {
+  @override
+  State<CreateScreen> createState() => _CreateScreenState();
+}
+
+class _CreateScreenState extends State<CreateScreen> {
+
+  File? image;
+  TextEditingController nameControl = TextEditingController();
+  TextEditingController mobileControl = TextEditingController();
+
+  Future<void> _getImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path);
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.close, size: 35, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            Provider.of<BottomNavigationController>(context, listen: false)
+                .currentIndex = 0;
+          },
         ),
         actions: [
           Container(
@@ -43,56 +72,78 @@ class CreateScreen extends StatelessWidget {
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             Container(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 10,),
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10)
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: 10,
               ),
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: TextField(
                   maxLength: 150,
                   decoration: InputDecoration(
-                    hintText: "Max Length 150",
-                    border: InputBorder.none
-                  ),
+                      hintText: "Max Length 150", border: InputBorder.none),
                 ),
               ),
             ),
             SizedBox(height: 10), //for spacing between texts
             Text(
-              'Body text (optional)',
+              'Description',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
             Container(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 10,),
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10)
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: 10,
               ),
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Max Length 150",
-                    border: InputBorder.none
-                  ),
+                  maxLines: 5,
+                  decoration: InputDecoration(border: InputBorder.none),
                 ),
               ),
             ),
-            Spacer(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+            SizedBox(
+              height: 10,
+            ),
+             Text(
+              'Add Image',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(Icons.link),
-                    Icon(Icons.image),
-                    Icon(Icons.video_collection),
-                    Icon(Icons.file_copy),
-                  ],
+                ImageIconButton(
+                  width: size.width * .35,
+                  height: size.height * .06,
+                  onPressed: () => _getImage(ImageSource.camera),
+                  icon: Icons.camera_alt_outlined,
+                  label: 'Camera',
+                ),
+                ImageIconButton(
+                  width: size.width * .35,
+                  height: size.height * .06,
+                  onPressed: () => _getImage(ImageSource.gallery),
+                  icon: Icons.photo,
+                  label: 'Gallery',
                 ),
               ],
             ),
+            if (image != null)
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20),
+                height: 200,
+                width: 200,
+                child: Image.file(
+                  image!,
+                  fit: BoxFit.cover,
+                ),
+              ),
           ],
         ),
       ),
