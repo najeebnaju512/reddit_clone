@@ -11,20 +11,24 @@ String userProfileModelToJson(UserProfileModel data) => json.encode(data.toJson(
 class UserProfileModel {
   int? status;
   Data? data;
+  List<Img>? img;
 
   UserProfileModel({
     this.status,
     this.data,
+    this.img,
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) => UserProfileModel(
     status: json["status"],
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    img: json["img"] == null ? [] : List<Img>.from(json["img"]!.map((x) => Img.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
     "data": data?.toJson(),
+    "img": img == null ? [] : List<dynamic>.from(img!.map((x) => x.toJson())),
   };
 }
 
@@ -73,5 +77,21 @@ class Data {
     "followers_count": followersCount,
     "following_count": followingCount,
     "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+  };
+}
+
+class Img {
+  String? file;
+
+  Img({
+    this.file,
+  });
+
+  factory Img.fromJson(Map<String, dynamic> json) => Img(
+    file: json["file"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "file": file,
   };
 }

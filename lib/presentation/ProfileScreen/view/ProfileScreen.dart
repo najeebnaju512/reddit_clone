@@ -1,3 +1,4 @@
+import 'package:clone_app/app_config/app_config.dart';
 import 'package:clone_app/presentation/ProfileScreen/controller/profile_screen_controller.dart';
 import 'package:clone_app/repository/followerslist_tab_widget.dart';
 import 'package:clone_app/repository/followinglist_tab_widget.dart';
@@ -133,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: GridView.builder(
-                        itemCount: 15,
+                        itemCount: controller.userProfileModel.img?.length,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -142,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisSpacing: 10),
                         itemBuilder: (context, index) => Container(
                           decoration: BoxDecoration(
-                            image: DecorationImage(image: NetworkImage("")),
+                            image: DecorationImage(image: NetworkImage("${AppConfig.mediaurl}${controller.userProfileModel.img?[index].file}"),fit: BoxFit.cover),
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.amber,
                           ),
