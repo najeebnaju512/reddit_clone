@@ -23,34 +23,26 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           // backgroundColor: Colors.amber,
-          title: Row(
-            children: [
-              Text(
-                "Home",
-                style: TextStyle(
-                    color: Colors.black54, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: 100,
-              ),
-              Spacer(),
-              Icon(
-                Icons.search,
-                size: 35,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Provider.of<BottomNavigationController>(context,
-                          listen: false)
-                      .currentIndex = 5;
-                },
-                child: CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/reddit3.jpg"),
-                  minRadius: 25,
-                ),
-              ),
-            ],
+          title: Text(
+            "Home",
+            style:
+                TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
           ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Provider.of<BottomNavigationController>(context, listen: false)
+                    .currentIndex = 5;
+              },
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/images/reddit3.jpg"),
+                minRadius: 15,
+              ),
+            ),
+            SizedBox(
+              width: 15,
+            )
+          ],
         ),
         drawer: drawer(),
         body: Consumer<HomeController>(

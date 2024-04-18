@@ -12,7 +12,6 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -57,9 +56,8 @@ class _FirstScreenState extends State<FirstScreen> {
                   },
                   child:
                       buildButton(Icons.email_outlined, "Register with Email")),
-              SizedBox(height: 20),
-              buildAgreementText(),
-              SizedBox(height: 25),
+
+              SizedBox(height: 45),
               GestureDetector(
                   onTap: () {
                     Navigator.push(context,
@@ -85,6 +83,7 @@ class _FirstScreenState extends State<FirstScreen> {
         child: Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 icon,
@@ -98,37 +97,6 @@ class _FirstScreenState extends State<FirstScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildAgreementText() {
-    return RichText(
-      text: TextSpan(
-        text: "By continuing, you agree to our ",
-        style: TextStyle(
-          color: Colors.grey,
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-        ),
-        children: [
-          TextSpan(
-            text: "User Agreement ",
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          TextSpan(
-            text: "and acknowledge",
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
       ),
     );
   }
