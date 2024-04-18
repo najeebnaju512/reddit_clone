@@ -23,20 +23,6 @@ class _InboxScreenState extends State<InboxScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         backgroundColor: Colors.black,
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(
-              child: Text("Notifications",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-            Tab(
-              child: Text("Messages",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-          ],
-        ),
         title: Row(
           children: [
             Text(
@@ -45,14 +31,6 @@ class _InboxScreenState extends State<InboxScreen>
             ),
             SizedBox(
               width: 150,
-            ),
-            InkWell(onTap: () {}, child: Icon(Icons.more_vert, size: 35)),
-            SizedBox(
-              width: 10,
-            ),
-            CircleAvatar(
-              radius: 25,
-              child: Image.asset("assets/images/reddit1.jpg"),
             ),
           ],
         ),
@@ -67,35 +45,38 @@ class _InboxScreenState extends State<InboxScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Today",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
                 SizedBox(height: 10),
                 Card(
                   shadowColor: Colors.blue,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                AssetImage("assets/images/reddit1.jpg"),
-                          ),
-                          Text(
-                            "DessertPorn:.59m",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Spacer(),
-                          Icon((Icons.more_vert)),
-                        ],
-                      ),
-                      SizedBox(width: 50),
-                      Text("Apple pie"),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundImage:
+                                  AssetImage("assets/images/reddit1.jpg"),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "DessertPorn:.59m",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Spacer(),
+                            Icon((Icons.more_vert)),
+                          ],
+                        ),
+                        SizedBox(width: 50),
+                        Text("Apple pie"),
+                      ],
+                    ),
                   ),
                 )
               ],

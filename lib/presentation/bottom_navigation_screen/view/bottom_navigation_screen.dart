@@ -27,7 +27,7 @@ class BottomNavScreen extends StatelessWidget {
                 HomeScreen(),
                 CommunityScreen(),
                 CreateScreen(),
-                ChatScreen(),
+                // ChatScreen(),
                 InboxScreen(),
                 ProfileScreen()
               ],
@@ -66,10 +66,10 @@ class BottomNavScreen extends StatelessWidget {
                       icon: Icon(Icons.add),
                       label: 'Create',
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.chat_rounded),
-                      label: 'Chat',
-                    ),
+                    // BottomNavigationBarItem(
+                    //   icon: Icon(Icons.chat_rounded),
+                    //   label: 'Chat',
+                    // ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.notifications),
                       label: 'Inbox',
