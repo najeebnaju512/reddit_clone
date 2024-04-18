@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:clone_app/presentation/chat_screen/view/chat_screen.dart';
 import 'package:clone_app/presentation/communities_screen/view/communities_screen.dart';
 import 'package:clone_app/presentation/create_screen/view/create_screen.dart';
+import 'package:clone_app/presentation/explore_screen/view/explore_screen.dart';
 import 'package:clone_app/presentation/home_screen/view/home_screen.dart';
 import 'package:clone_app/presentation/inbox_screen/view/inbox_screen.dart';
 import 'package:clone_app/presentation/ProfileScreen/view/ProfileScreen.dart';
@@ -27,7 +28,7 @@ class BottomNavScreen extends StatelessWidget {
                 HomeScreen(),
                 CommunityScreen(),
                 CreateScreen(),
-                // ChatScreen(),
+                ExploreScreen(),
                 InboxScreen(),
                 ProfileScreen()
               ],
@@ -60,16 +61,16 @@ class BottomNavScreen extends StatelessWidget {
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.groups),
-                      label: 'Explore',
+                      label: 'Community',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.add),
                       label: 'Create',
                     ),
-                    // BottomNavigationBarItem(
-                    //   icon: Icon(Icons.chat_rounded),
-                    //   label: 'Chat',
-                    // ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.travel_explore_sharp),
+                      label: 'Explore',
+                    ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.notifications),
                       label: 'Inbox',
