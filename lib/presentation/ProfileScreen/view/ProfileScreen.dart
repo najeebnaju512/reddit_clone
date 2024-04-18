@@ -30,14 +30,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? Center(child: CircularProgressIndicator())
           : Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.black,
+
                 title: Text('Profile'),
                 actions: [
                   IconButton(
                       onPressed: () {}, icon: Icon(Icons.add_box_outlined)),
                   IconButton(
-                    icon: Icon(Icons.more_vert),
-                    onPressed: () {},
+                    icon: Icon(Icons.logout),
+                    onPressed: (){
+                      _showAlertDialog(context);
+                    },
                   ),
                 ],
               ),
@@ -52,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CircleAvatar(
                           radius: 50,
                           backgroundImage: NetworkImage(
-                              "${controller.userProfileModel.data?.profileImage ?? "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"}"),
+                              "${controller.userProfileModel.data?.profileImage ?? "${AppConfig.noDp}"}"),
                         ),
                         SizedBox(height: 10),
                         Text(
@@ -155,5 +157,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             );
     });
+  }
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text(
+              'Do you wish to Logout',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Cancel",
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Provider.of<ProfileController>(context, listen: false).logOutFunction(context);
+                    },
+                    child: Text(
+                      "Logout",
+                    ),
+                  )
+                ],
+              )
+            ]));
   }
 }
