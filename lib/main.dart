@@ -6,6 +6,7 @@ import 'package:clone_app/presentation/splash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'presentation/create_screen/controller/create_controller.dart';
 import 'presentation/registration/controller/registration_controller.dart';
 
 void main() {
@@ -15,7 +16,8 @@ void main() {
       ChangeNotifierProvider(create: (context) => LoginController()),
       ChangeNotifierProvider(create: (context) => HomeController()),
       ChangeNotifierProvider(create: (context) => BottomNavigationController()),
-      ChangeNotifierProvider(create: (context) => ProfileController())
+      ChangeNotifierProvider(create: (context) => ProfileController()),
+      ChangeNotifierProvider(create: (context) => CreateController())
     ],
     child: const MyApp(),
   ));

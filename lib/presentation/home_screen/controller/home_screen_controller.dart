@@ -24,7 +24,7 @@ class HomeController extends ChangeNotifier {
   bool isLoading = false;
   HomeModel homeModel = HomeModel();
 
-  void fetchHomeData(BuildContext context) {
+  Future<void> fetchHomeData(BuildContext context) async{
     isLoading = true;
     notifyListeners();
     HomeService.fetchData().then((value) {
