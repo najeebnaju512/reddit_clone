@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clone_app/presentation/create_screen/controller/create_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,10 +14,9 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-
   File? image;
-  TextEditingController nameControl = TextEditingController();
-  TextEditingController mobileControl = TextEditingController();
+  TextEditingController locControl = TextEditingController();
+  TextEditingController captionControl = TextEditingController();
 
   Future<void> _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
@@ -26,6 +26,7 @@ class _CreateScreenState extends State<CreateScreen> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -39,28 +40,6 @@ class _CreateScreenState extends State<CreateScreen> {
                 .currentIndex = 0;
           },
         ),
-        actions: [
-          Container(
-            height: 30,
-            width: 150,
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(width: 1)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Next",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -68,8 +47,8 @@ class _CreateScreenState extends State<CreateScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Title',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              'Add Location',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Container(
               padding: EdgeInsetsDirectional.symmetric(
@@ -80,6 +59,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: TextField(
+                  controller: locControl,
                   maxLength: 150,
                   decoration: InputDecoration(
                       hintText: "Max Length 150", border: InputBorder.none),
@@ -88,7 +68,7 @@ class _CreateScreenState extends State<CreateScreen> {
             ),
             SizedBox(height: 10), //for spacing between texts
             Text(
-              'Description',
+              'Caption',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
             Container(
@@ -100,6 +80,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: TextField(
+                  controller: captionControl,
                   maxLines: 5,
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
@@ -108,7 +89,7 @@ class _CreateScreenState extends State<CreateScreen> {
             SizedBox(
               height: 10,
             ),
-             Text(
+            Text(
               'Add Image',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
@@ -144,6 +125,44 @@ class _CreateScreenState extends State<CreateScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
+            SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: InkWell(
+                onTap: () {
+                  Provider.of<CreateController>(context, listen: false).onPost(
+                      context,
+                      selectedImage: image,
+                      loc: locControl.text,
+                      cap: captionControl.text);
+                  locControl.clear();
+                  captionControl.clear();
+                  image = null;
+                },
+                child: Container(
+                  height: 50,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      color: Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(width: 1)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Post",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Spacer()
           ],
         ),
       ),

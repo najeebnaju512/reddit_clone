@@ -45,137 +45,145 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         drawer: drawer(),
-        body: Consumer<HomeController>(
-          builder: (context, ctrl, child) {
-            return ctrl.isLoading == true
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    itemCount: ctrl.homeModel.data?.length,
-                    itemBuilder: (context, index) {
-                      var profileImageUrl = ctrl.homeModel.data?[index].creator
-                                  ?.profileImage ==
-                              null
-                          ? "https://th.bing.com/th/id/OIP.y6HMdOJ4LiIUWk7n5ZGlpAHaHa?w=480&h=480&rs=1&pid=ImgDetMain"
-                          : AppConfig.mediaurl +
-                              "${ctrl.homeModel.data?[index].creator?.profileImage}";
-                      var imageUrl = ctrl.homeModel.data?[index].file == null
-                          ? "https://th.bing.com/th/id/OIP.y6HMdOJ4LiIUWk7n5ZGlpAHaHa?w=480&h=480&rs=1&pid=ImgDetMain"
-                          : AppConfig.mediaurl +
-                              "${ctrl.homeModel.data?[index].file}";
-                      return Card(
-                        margin: EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Row(
+        body: RefreshIndicator(
+          onRefresh: () => Provider.of<HomeController>(context, listen: false)
+              .fetchHomeData(context),
+          child: Consumer<HomeController>(
+            builder: (context, ctrl, child) {
+              return ctrl.isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      itemCount: ctrl.homeModel.data?.length,
+                      itemBuilder: (context, index) {
+                        var profileImageUrl = ctrl.homeModel.data?[index]
+                                    .creator?.profileImage ==
+                                null
+                            ? "https://th.bing.com/th/id/OIP.y6HMdOJ4LiIUWk7n5ZGlpAHaHa?w=480&h=480&rs=1&pid=ImgDetMain"
+                            : AppConfig.mediaurl +
+                                "${ctrl.homeModel.data?[index].creator?.profileImage}";
+                        var imageUrl = ctrl.homeModel.data?[index].file == null
+                            ? "https://th.bing.com/th/id/OIP.y6HMdOJ4LiIUWk7n5ZGlpAHaHa?w=480&h=480&rs=1&pid=ImgDetMain"
+                            : AppConfig.mediaurl +
+                                "${ctrl.homeModel.data?[index].file}";
+                        return Card(
+                          margin: EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(profileImageUrl),
+                                      backgroundColor: Colors.grey,
+                                      radius: 20,
+                                    ),
+                                    SizedBox(width: 8.0),
+                                    Text(
+                                      "${ctrl.homeModel.data?[index].creator?.username}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Icon(Icons.more_vert_outlined),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${ctrl.homeModel.data?[index].location}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.0),
+                                    Text(
+                                      "${ctrl.homeModel.data?[index].caption}",
+                                    ),
+                                    SizedBox(height: 8.0),
+                                  ],
+                                ),
+                              ),
+                              Image.network(
+                                "${imageUrl}",
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 300,
+                              ),
+                              SizedBox(height: 10),
+                              Row(
                                 children: [
-                                  CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(profileImageUrl),
-                                    backgroundColor: Colors.grey,
-                                    radius: 20,
-                                  ),
-                                  SizedBox(width: 8.0),
-                                  Text(
-                                    "${ctrl.homeModel.data?[index].creator?.username}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                  Expanded(
+                                    child: Container(
+                                      height: 30,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          border: Border.all(width: 1)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Icon(
+                                            ctrl.homeModel.data?[index]
+                                                        .isLiked ==
+                                                    true
+                                                ? null
+                                                : Icons.arrow_upward_outlined,
+                                            size: 10,
+                                          ),
+                                          Text(
+                                              "${ctrl.homeModel.data?[index].likeCount}"),
+                                          Icon(
+                                            ctrl.homeModel.data?[index]
+                                                        .isLiked ==
+                                                    false
+                                                ? null
+                                                : Icons.arrow_downward_outlined,
+                                            size: 10,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  Spacer(),
-                                  Icon(Icons.more_vert_outlined),
+                                  Expanded(
+                                    child: Container(
+                                      height: 30,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          border: Border.all(width: 1)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Icon(Icons.message_outlined),
+                                          Text(
+                                              "${ctrl.homeModel.data?[index].comments?.length} Comments"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${ctrl.homeModel.data?[index].location}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4.0),
-                                  Text(
-                                    "${ctrl.homeModel.data?[index].caption}",
-                                  ),
-                                  SizedBox(height: 8.0),
-                                ],
-                              ),
-                            ),
-                            Image.network(
-                              "${imageUrl}",
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: 300,
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 30,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25),
-                                        border: Border.all(width: 1)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Icon(
-                                          ctrl.homeModel.data?[index].isLiked ==
-                                                  true
-                                              ? null
-                                              : Icons.arrow_upward_outlined,
-                                          size: 10,
-                                        ),
-                                        Text(
-                                            "${ctrl.homeModel.data?[index].likeCount}"),
-                                        Icon(
-                                          ctrl.homeModel.data?[index].isLiked ==
-                                                  false
-                                              ? null
-                                              : Icons.arrow_downward_outlined,
-                                          size: 10,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 30,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25),
-                                        border: Border.all(width: 1)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Icon(Icons.message_outlined),
-                                        Text(
-                                            "${ctrl.homeModel.data?[index].comments?.length} Comments"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-          },
+                            ],
+                          ),
+                        );
+                      },
+                    );
+            },
+          ),
         ));
   }
 }
