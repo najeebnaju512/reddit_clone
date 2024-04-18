@@ -31,7 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               appBar: AppBar(
                 title: Text('Profile'),
                 actions: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.add_box_outlined)),
                   IconButton(
                     icon: Icon(Icons.logout),
                     onPressed: () {

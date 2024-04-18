@@ -63,7 +63,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) =>
-                          CommunityScreenWidget(),
+                          CommunityScreenWidget(dp: 'wlkdm', username: 'qwkqk',),
                     ),
                   ),
                 ],
