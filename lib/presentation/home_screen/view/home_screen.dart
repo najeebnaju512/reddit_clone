@@ -123,46 +123,58 @@ class _HomeScreenState extends State<HomeScreen> {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: Container(
-                                      height: 30,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                          border: Border.all(width: 1)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(
-                                            ctrl.homeModel.data?[index]
-                                                        .isLiked ==
-                                                    true
-                                                ? null
-                                                : Icons.arrow_upward_outlined,
-                                            size: 10,
-                                          ),
-                                          Text(
-                                              "${ctrl.homeModel.data?[index].likeCount}"),
-                                          Icon(
-                                            ctrl.homeModel.data?[index]
-                                                        .isLiked ==
-                                                    false
-                                                ? null
-                                                : Icons.arrow_downward_outlined,
-                                            size: 10,
-                                          ),
-                                        ],
+                                    child: InkWell(
+                                      onTap: () {
+                                        Provider.of<HomeController>(context,
+                                                listen: false)
+                                            .onlike(context, id: 1.toString());
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(width: 1)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Icon(
+                                              ctrl.homeModel.data?[index]
+                                                          .isLiked ==
+                                                      true
+                                                  ? null
+                                                  : Icons.thumb_up_alt,
+                                            ),
+                                            Text(
+                                                "${ctrl.homeModel.data?[index].likeCount}"),
+                                            Icon(
+                                              ctrl.homeModel.data?[index]
+                                                          .isLiked ==
+                                                      false
+                                                  ? null
+                                                  : Icons
+                                                      .arrow_downward_outlined,
+                                              size: 10,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
                                   Expanded(
                                     child: Container(
-                                      height: 30,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 5),
                                       width: 150,
                                       decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(25),
+                                              BorderRadius.circular(15),
                                           border: Border.all(width: 1)),
                                       child: Row(
                                         mainAxisAlignment:
