@@ -13,4 +13,15 @@ class ProfileService {
       log("$e");
     }
   }
+
+  static Future<dynamic> fetchFollowing(String name) async {
+    try {
+      var decodedData = await ApiHelper.getData(
+          endPoint: "accounts/$name/following/",
+          header: ApiHelper.getApiHeader(access: await AppUtils.getAccessKey()));
+      return decodedData;
+    } catch (e) {
+      log("$e");
+    }
+  }
 }

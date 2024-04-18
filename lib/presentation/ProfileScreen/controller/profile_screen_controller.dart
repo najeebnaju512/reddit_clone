@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:clone_app/core/app_utils.dart';
 import 'package:clone_app/presentation/FirstScreen/view/first_screen.dart';
+import 'package:clone_app/presentation/ProfileScreen/model/following_model.dart';
 import 'package:clone_app/presentation/ProfileScreen/model/user_profile_model.dart';
 import 'package:clone_app/presentation/ProfileScreen/service/profile_service.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,9 @@ import '../../../app_config/app_config.dart';
 
 class ProfileController extends ChangeNotifier {
   UserProfileModel userProfileModel = UserProfileModel();
+  FollowingModel followingModel =FollowingModel();
   bool isLoadingProfile = false;
+  bool isLoadingFollowing=false;
   late SharedPreferences sharedPreferences;
   var data;
 
@@ -30,6 +33,21 @@ class ProfileController extends ChangeNotifier {
           AppUtils.oneTimeSnackBar("error", context: context);
         }
         notifyListeners();
+      });
+    });
+  }
+  fetchFollowing(context){
+    isLoadingFollowing=true;
+    notifyListeners();
+    getUSerData().then((data) {
+      log("Profilecontroller -> fetchFollowing");
+      ProfileService.fetchFollowing(data).then((value) {
+        if(value["status"]==1){
+          followingModel=FollowingModel.fromJson(value);
+          isLoadingFollowing=false;
+        }else{
+          AppUtils.oneTimeSnackBar("error", context: context);
+        }
       });
     });
   }
