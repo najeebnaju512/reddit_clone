@@ -60,7 +60,7 @@ class BottomNavScreen extends StatelessWidget {
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.groups),
-                      label: 'Communities',
+                      label: 'Explore',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.add),
