@@ -1,4 +1,7 @@
+
 import 'package:clone_app/presentation/bottom_navigation_screen/controller/bottom_nav_con';
+import 'package:clone_app/presentation/communities_screen/controller/communities_screen_controller.dart';
+import 'package:clone_app/presentation/explore_screen/controller/explore_controller.dart';
 import 'package:clone_app/presentation/home_screen/controller/home_screen_controller.dart';
 import 'package:clone_app/presentation/ProfileScreen/controller/profile_screen_controller.dart';
 import 'package:clone_app/presentation/login/controller/login_controller.dart';
@@ -17,7 +20,10 @@ void main() {
       ChangeNotifierProvider(create: (context) => HomeController()),
       ChangeNotifierProvider(create: (context) => BottomNavigationController()),
       ChangeNotifierProvider(create: (context) => ProfileController()),
-      ChangeNotifierProvider(create: (context) => CreateController())
+      ChangeNotifierProvider(create: (context) => CreateController()),
+      ChangeNotifierProvider(create: (context) => ExploreController()),
+      ChangeNotifierProvider(create: (context)=> CommunityController())
+
     ],
     child: const MyApp(),
   ));

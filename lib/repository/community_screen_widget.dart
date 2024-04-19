@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CommunityScreenWidget extends StatefulWidget {
-  const CommunityScreenWidget({super.key});
+  const CommunityScreenWidget({super.key, required this.dp, required this.username});
+  final String dp;
+  final String username;
 
   @override
   State<CommunityScreenWidget> createState() => _CommunityScreenWidgetState();
@@ -26,7 +28,7 @@ class _CommunityScreenWidgetState extends State<CommunityScreenWidget> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/reddit1.jpg'),
+                    backgroundImage: NetworkImage('${widget.dp}'),
                     backgroundColor: Colors.grey,
                     radius: 20,
                   ),
@@ -36,7 +38,7 @@ class _CommunityScreenWidgetState extends State<CommunityScreenWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'BollywoodFashion',
+                        '${widget.username}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
