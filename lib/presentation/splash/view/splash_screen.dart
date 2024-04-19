@@ -23,13 +23,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    print("print1");
     checkUserLogin().then((value) {
-      Future.delayed(Duration(seconds: 3), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => checkLogged ? BottomNavScreen() : FirstScreen()),
-        );
-      });
+      if (mounted)
+        Future.delayed(Duration(seconds: 3), () {
+          print("print2");
+          print(checkLogged);
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    checkLogged ? BottomNavScreen() : FirstScreen()),
+          );
+        });
     });
     super.initState();
   }

@@ -14,7 +14,10 @@ class CommunityController extends ChangeNotifier {
         communityModel = CommunityModel.fromJson(value);
         isLoading = false;
       } else {
-        AppUtils.oneTimeSnackBar("error", context: context);
+        isLoading = false;
+
+        AppUtils.oneTimeSnackBar("error",
+            context: context, bgColor: Colors.red);
       }
       notifyListeners();
     });

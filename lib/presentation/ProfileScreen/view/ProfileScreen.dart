@@ -12,148 +12,155 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  fetchData() {
-    Provider.of<ProfileController>(context, listen: false).fetchProfile(context);
-  }
-
   @override
   void initState() {
-    fetchData();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ProfileController>(context, listen: false)
+          .fetchProfile(context);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProfileController>(builder: (context, controller, _) {
-      return controller.isLoadingProfile == true
-          ? Center(child: CircularProgressIndicator())
-          : Scaffold(
-              appBar: AppBar(
-                title: Text('Profile'),
-                actions: [
-                  IconButton(
-                    icon: Icon(Icons.logout),
-                    onPressed: () {
-                      _showAlertDialog(context);
-                    },
-                  ),
-                ],
-              ),
-              drawer: ProfileDrawer(),
-              body: RefreshIndicator(
-                onRefresh: () => Provider.of<ProfileController>(context, listen: false).fetchProfile(context),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 20),
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundImage: NetworkImage(
-                                "${controller.userProfileModel.data?.profileImage ?? "${AppConfig.noDp}"}"),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Profile'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                _showAlertDialog(context);
+              },
+            ),
+          ],
+        ),
+        drawer: ProfileDrawer(),
+        body: Consumer<ProfileController>(builder: (__, controller, _) {
+          return controller.isLoadingProfile == true
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              "${controller.userProfileModel.data?.profileImage ?? "${AppConfig.noDp}"}"),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          controller.userProfileModel.data?.username ??
+                              "no username",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            controller.userProfileModel.data?.username ?? "no username",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "${controller.userProfileModel.data?.postCount ?? "0"}",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "${controller.userProfileModel.data?.postCount ?? "0"}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Text(
-                                'posts',
+                            Text(
+                              'posts',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        Column(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FollowersList()),
+                                );
+                              },
+                              child: Text(
+                                "${controller.userProfileModel.data?.followersCount ?? "0"}",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                            ],
-                          ),
-                          SizedBox(width: 20),
-                          Column(
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => FollowersList()),
-                                  );
-                                },
-                                child: Text(
-                                  "${controller.userProfileModel.data?.followersCount ?? "0"}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Text(
-                                'followers',
+                            ),
+                            Text(
+                              'followers',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        Column(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FollowingList()),
+                                );
+                              },
+                              child: Text(
+                                '${controller.userProfileModel.data?.followingCount ?? "0"}',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                            ],
-                          ),
-                          SizedBox(width: 20),
-                          Column(
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => FollowingList()),
-                                  );
-                                },
-                                child: Text(
-                                  '${controller.userProfileModel.data?.followingCount ?? "0"}',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
+                            ),
+                            Text(
+                              'following',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            await Provider.of<ProfileController>(context,
+                                    listen: false)
+                                .fetchProfile(context);
+                          },
+                          child: GridView.builder(
+                            itemCount: controller.userProfileModel.img?.length,
+                            shrinkWrap: true,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10),
+                            itemBuilder: (context, index) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        "${AppConfig.mediaurl}${controller.userProfileModel.img?[index].file}"),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.amber,
                               ),
-                              Text(
-                                'following',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: GridView.builder(
-                          itemCount: controller.userProfileModel.img?.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
-                          itemBuilder: (context, index) => Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "${AppConfig.mediaurl}${controller.userProfileModel.img?[index].file}"),
-                                  fit: BoxFit.cover),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.amber,
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-    });
+                      ),
+                    )
+                  ],
+                );
+        }));
   }
 
   void _showAlertDialog(BuildContext context) {
@@ -179,7 +186,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Provider.of<ProfileController>(context, listen: false).logOutFunction(context);
+                          Provider.of<ProfileController>(context, listen: false)
+                              .logOutFunction(context);
                         },
                         child: Text(
                           "Logout",

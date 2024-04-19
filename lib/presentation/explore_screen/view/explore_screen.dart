@@ -15,7 +15,9 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
-    Provider.of<ExploreController>(context, listen: false).fetchData(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ExploreController>(context, listen: false).fetchData(context);
+    });
     super.initState();
   }
 
@@ -39,14 +41,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.only(left: 10,right: 10),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: ListView.builder(
             //scrollDirection: Axis.horizontal,
             itemCount: controller.exploreModel.data?.length,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) => CommunityScreenWidget(
-              dp: '${controller.exploreModel.data?[index].profileImage??"${AppConfig.noDp}"}',
+            itemBuilder: (BuildContext context, int index) =>
+                CommunityScreenWidget(
+              dp: '${controller.exploreModel.data?[index].profileImage ?? "${AppConfig.noDp}"}',
               username: '${controller.exploreModel.data?[index].username}',
             ),
           ),
