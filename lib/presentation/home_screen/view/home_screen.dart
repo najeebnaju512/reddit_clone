@@ -14,7 +14,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    Provider.of<HomeController>(context, listen: false).fetchHomeData(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      print("home screen");
+      Provider.of<HomeController>(context, listen: false)
+          .fetchHomeData(context);
+    });
+
     super.initState();
   }
 
